@@ -1,0 +1,20 @@
+name: ag_cli
+description: Flutter GetX code generator CLI. Scaffolds modules, components, models, repos, controllers, bindings, and pages.
+version: 2.0.0
+homepage: https://github.com/infraon/ag-cli
+repository: https://github.com/infraon/ag-cli
+issue_tracker: https://github.com/infraon/ag-cli/issues
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  args: ^2.5.0
+  path: ^1.9.0
+
+dev_dependencies:
+  test: ^1.24.0
+  lints: ^6.1.0
+
+executables:
+  ag: ag
