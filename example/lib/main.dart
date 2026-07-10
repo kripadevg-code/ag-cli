@@ -10,7 +10,7 @@ import 'core/services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Core Services
   final storage = await StorageService().init();
   Get.put(storage);

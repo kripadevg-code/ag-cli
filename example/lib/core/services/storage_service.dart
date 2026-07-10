@@ -27,7 +27,7 @@ class StorageService extends GetxService {
 
   List<String> getStringList(String key) => _prefs.getStringList(key) ?? [];
   Future<bool> setStringList(String key, List<String> value) => _prefs.setStringList(key, value);
-  
+
   Future<bool> remove(String key) => _prefs.remove(key);
   Future<bool> clear() => _prefs.clear();
 }

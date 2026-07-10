@@ -14,15 +14,15 @@ class AuthGuard extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     // Inject the unified StorageService
     final storage = StorageService.find;
-    
+
     // Check if the user has a valid session token
     final token = storage.getToken();
-    
+
     // If not authenticated, redirect to the login page
     if (token == null || token.isEmpty) {
       return const RouteSettings(name: AppRoutes.login);
     }
-    
+
     // Allow navigation
     return null;
   }

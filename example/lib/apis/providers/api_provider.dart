@@ -35,15 +35,14 @@ class ApiProviderImpl implements ApiProvider {
   /// Initialize the API Provider. Call this in InitialBinding.
   @override
   void init(String baseUrl) {
-    _dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      ),
+    );
 
     _dio.interceptors.add(
       InterceptorsWrapper(

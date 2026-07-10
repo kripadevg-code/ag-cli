@@ -204,6 +204,23 @@ ag upgrade
 
 ---
 
+## Example App & Best Practices
+
+Check out the `example/` folder in the repository! We've scaffolded a reference application using only `ag_cli` commands.
+
+```bash
+cd example
+flutter run
+```
+
+The example highlights:
+- **Centralized `StorageService`**: A robust, type-safe wrapper over `SharedPreferences` injected during `ag init`.
+- **Pre-built `AuthGuard`**: A `GetMiddleware` implementation protecting private routes instantly.
+- **Generated Modules**: Full `AuthLogin`, `Home`, `Profile`, `Settings`, and `ProductsDetails` modules with automatic routing.
+- **Nested Architecture**: Showcases how `components/details/` stay cleanly separated while logic stays flat.
+
+---
+
 ## Generated Module Structure
 
 Running `ag g module orders --full` produces:
