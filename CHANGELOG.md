@@ -1,3 +1,8 @@
+## 2.3.1
+
+- **Docs**: Added a high-quality GIF demo to the `README.md`.
+- **Docs**: Added a custom neon logo to the `README.md`.
+
 ## 2.3.0
 
 - **Feature**: `ag init` now automatically scaffolds a best-practice `AuthGuard` (`GetMiddleware`) inside `lib/core/guards/auth_guard.dart`. It intelligently checks for a session token using the globally injected `SharedPreferences` from `InitialBinding`, and redirects to `AppRoutes.login` if unauthenticated.

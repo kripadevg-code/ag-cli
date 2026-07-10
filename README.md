@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kripadevg-code/ag-cli/main/assets/logo.png" alt="ag_cli logo" width="120"/>
+  <img src="assets/logo.png" alt="ag_cli logo" width="120"/>
 </p>
 
 <h1 align="center">ag_cli</h1>
@@ -21,7 +21,7 @@
 > **Angular CLI for Flutter.** `ag_cli` does for GetX what Angular CLI does for Angular — one command wires up every layer of your architecture, tested and ready to ship.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kripadevg-code/ag-cli/main/assets/demo.gif" alt="ag_cli demo" width="100%"/>
+  <img src="assets/demo.gif" alt="ag_cli demo" width="100%"/>
 </p>
 
 ---
