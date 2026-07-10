@@ -149,6 +149,8 @@ lib/
 ├── bindings/initial_binding.dart           ← Global GetX dependencies
 ├── constants/enums.dart                    ← LoadingStatus enum
 ├── core/
+│   ├── guards/
+│   │   └── auth_guard.dart                 ← Token validation & redirect
 │   ├── isolate_handler.dart                ← Background JSON parsing
 │   └── services/
 │       ├── theme_service.dart              ← Persistent dark/light mode

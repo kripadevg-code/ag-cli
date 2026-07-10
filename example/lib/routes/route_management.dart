@@ -8,7 +8,4 @@ abstract class RouteManagement {
   // static void goToHomePage() {
   //   Get.toNamed(AppRoutes.home);
   // }
-  static void goToOrders() {
-    Get.toNamed(AppRoutes.orders);
-  }
 }

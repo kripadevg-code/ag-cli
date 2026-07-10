@@ -123,6 +123,13 @@ class InitCommand extends Command<int> {
       force: force,
     );
 
+    count += _w(
+      p.join(libDir, 'core', 'guards', 'auth_guard.dart'),
+      authGuardStub(packageName),
+      dryRun: dryRun,
+      force: force,
+    );
+
     // ─── Theme ──────────────────────────────────────────────────────────────
     count += _w(
       p.join(libDir, 'utils', 'theme', 'app_colors.dart'),

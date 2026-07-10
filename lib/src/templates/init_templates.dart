@@ -6,12 +6,14 @@ String appRoutesStub() => '''
 abstract class AppRoutes {
   static const initial = _Routes.home;
   static const home = _Routes.home;
+  static const login = _Routes.login;
 
   // TODO: add routes here (ag module generates stubs in ROUTE_TODO.md)
 }
 
 abstract class _Routes {
   static const home = '/home';
+  static const login = '/login';
 }
 ''';
 
@@ -329,6 +331,38 @@ class ThemeService extends GetxService {
     final isDark = isDarkMode;
     _prefs.setBool(_themeKey, !isDark);
     Get.changeThemeMode(!isDark ? ThemeMode.dark : ThemeMode.light);
+  }
+}
+''';
+
+String authGuardStub(String pkg) => '''
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:$pkg/routes/app_routes.dart';
+
+/// Standard GetX authentication guard.
+///
+/// Registers automatically in AppPages for protected routes.
+class AuthGuard extends GetMiddleware {
+  @override
+  int? get priority => 1;
+
+  @override
+  RouteSettings? redirect(String? route) {
+    // Inject the global SharedPreferences instance
+    final prefs = Get.find<SharedPreferences>();
+    
+    // Check if the user has a valid session token
+    final token = prefs.getString('token');
+    
+    // If not authenticated, redirect to the login page
+    if (token == null || token.isEmpty) {
+      return const RouteSettings(name: AppRoutes.login);
+    }
+    
+    // Allow navigation
+    return null;
   }
 }
 ''';

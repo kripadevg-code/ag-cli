@@ -1,3 +1,9 @@
+## 2.3.0
+
+- **Feature**: `ag init` now automatically scaffolds a best-practice `AuthGuard` (`GetMiddleware`) inside `lib/core/guards/auth_guard.dart`. It intelligently checks for a session token using the globally injected `SharedPreferences` from `InitialBinding`, and redirects to `AppRoutes.login` if unauthenticated.
+- **Improvement**: Added `AppRoutes.login` stub out-of-the-box so the `AuthGuard` has a valid redirection target.
+- **Improvement**: `ag doctor` now verifies that the `core/guards/auth_guard.dart` exists and is properly formed.
+
 ## 2.2.0
 
 - **Feature**: Nested submodule generation. Run `ag g m orders/details` to create a smart nested module. MVC files are automatically prefixed (`orders_details_controller.dart`) and stay flat in the parent folder, while UI widgets are cleanly isolated in `components/details/`.
