@@ -292,15 +292,11 @@ class IsolateHandler {
 String initialBindingStub(String pkg) => '''
 import 'package:get/get.dart';
 import 'package:$pkg/apis/providers/api_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Global dependencies injected before the app starts.
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    // ─── Core Services ───
-    Get.putAsync<SharedPreferences>(() => SharedPreferences.getInstance(), permanent: true);
-
     // ─── Network ───
     ApiProviderImpl.instance.init('https://api.example.com');
     Get.put<ApiProvider>(ApiProviderImpl.instance, permanent: true);
@@ -311,25 +307,24 @@ class InitialBinding extends Bindings {
 String themeServiceStub() => '''
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'storage_service.dart';
 
-/// Service to manage and persist the app theme across sessions.
+/// Service to handle app theme mode
 class ThemeService extends GetxService {
   static ThemeService get find => Get.find();
 
-  final SharedPreferences _prefs;
-  ThemeService(this._prefs);
+  final StorageService _storage = StorageService.find;
 
   static const String _themeKey = 'isDarkMode';
 
-  bool get isDarkMode => _prefs.getBool(_themeKey) ?? false;
+  bool get isDarkMode => _storage.getBool(_themeKey);
 
   ThemeMode get themeMode => isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-  /// Toggles the current theme and persists it to SharedPreferences
+  /// Toggles the current theme and persists it to StorageService
   void toggleTheme() {
     final isDark = isDarkMode;
-    _prefs.setBool(_themeKey, !isDark);
+    _storage.setBool(_themeKey, !isDark);
     Get.changeThemeMode(!isDark ? ThemeMode.dark : ThemeMode.light);
   }
 }
@@ -338,7 +333,7 @@ class ThemeService extends GetxService {
 String authGuardStub(String pkg) => '''
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:$pkg/core/services/storage_service.dart';
 import 'package:$pkg/routes/app_routes.dart';
 
 /// Standard GetX authentication guard.
@@ -350,11 +345,11 @@ class AuthGuard extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    // Inject the global SharedPreferences instance
-    final prefs = Get.find<SharedPreferences>();
+    // Inject the unified StorageService
+    final storage = StorageService.find;
     
     // Check if the user has a valid session token
-    final token = prefs.getString('token');
+    final token = storage.getToken();
     
     // If not authenticated, redirect to the login page
     if (token == null || token.isEmpty) {
@@ -364,5 +359,41 @@ class AuthGuard extends GetMiddleware {
     // Allow navigation
     return null;
   }
+}
+''';
+
+String storageServiceStub() => '''
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// Centralized local storage service.
+/// Wraps SharedPreferences to provide a unified, type-safe API.
+class StorageService extends GetxService {
+  static StorageService get find => Get.find<StorageService>();
+
+  late SharedPreferences _prefs;
+
+  Future<StorageService> init() async {
+    _prefs = await SharedPreferences.getInstance();
+    return this;
+  }
+
+  // ─── Authentication ───
+  String? getToken() => _prefs.getString('token');
+  Future<bool> setToken(String token) => _prefs.setString('token', token);
+  Future<bool> clearToken() => _prefs.remove('token');
+
+  // ─── Generic Typed Methods ───
+  String? getString(String key) => _prefs.getString(key);
+  Future<bool> setString(String key, String value) => _prefs.setString(key, value);
+
+  bool getBool(String key) => _prefs.getBool(key) ?? false;
+  Future<bool> setBool(String key, bool value) => _prefs.setBool(key, value);
+
+  List<String> getStringList(String key) => _prefs.getStringList(key) ?? [];
+  Future<bool> setStringList(String key, List<String> value) => _prefs.setStringList(key, value);
+  
+  Future<bool> remove(String key) => _prefs.remove(key);
+  Future<bool> clear() => _prefs.clear();
 }
 ''';

@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'storage_service.dart';
 
-/// Service to manage and persist the app theme across sessions.
+/// Service to handle app theme mode
 class ThemeService extends GetxService {
   static ThemeService get find => Get.find();
 
-  final SharedPreferences _prefs;
-  ThemeService(this._prefs);
+  final StorageService _storage = StorageService.find;
 
   static const String _themeKey = 'isDarkMode';
 
-  bool get isDarkMode => _prefs.getBool(_themeKey) ?? false;
+  bool get isDarkMode => _storage.getBool(_themeKey);
 
   ThemeMode get themeMode => isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-  /// Toggles the current theme and persists it to SharedPreferences
+  /// Toggles the current theme and persists it to StorageService
   void toggleTheme() {
     final isDark = isDarkMode;
-    _prefs.setBool(_themeKey, !isDark);
+    _storage.setBool(_themeKey, !isDark);
     Get.changeThemeMode(!isDark ? ThemeMode.dark : ThemeMode.light);
   }
 }

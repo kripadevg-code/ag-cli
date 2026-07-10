@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:example/core/services/storage_service.dart';
 import 'package:example/routes/app_routes.dart';
 
 /// Standard GetX authentication guard.
@@ -12,17 +12,17 @@ class AuthGuard extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    // Inject the global SharedPreferences instance
-    final prefs = Get.find<SharedPreferences>();
-
+    // Inject the unified StorageService
+    final storage = StorageService.find;
+    
     // Check if the user has a valid session token
-    final token = prefs.getString('token');
-
+    final token = storage.getToken();
+    
     // If not authenticated, redirect to the login page
     if (token == null || token.isEmpty) {
       return const RouteSettings(name: AppRoutes.login);
     }
-
+    
     // Allow navigation
     return null;
   }

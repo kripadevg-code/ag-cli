@@ -6,7 +6,13 @@ class SearchHistoryPanel extends StatelessWidget {
   final String query;
   final void Function(String) onItemTap;
 
-  const SearchHistoryPanel({super.key, required this.historyKey, required this.visible, required this.query, required this.onItemTap});
+  const SearchHistoryPanel({
+    super.key,
+    required this.historyKey,
+    required this.visible,
+    required this.query,
+    required this.onItemTap,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -130,6 +130,13 @@ class InitCommand extends Command<int> {
       force: force,
     );
 
+    count += _w(
+      p.join(libDir, 'core', 'services', 'storage_service.dart'),
+      storageServiceStub(),
+      dryRun: dryRun,
+      force: force,
+    );
+
     // ─── Theme ──────────────────────────────────────────────────────────────
     count += _w(
       p.join(libDir, 'utils', 'theme', 'app_colors.dart'),
@@ -155,8 +162,8 @@ class InitCommand extends Command<int> {
     // ─── Common Widgets & Helpers ───────────────────────────────────────────
     count += _w(p.join(libDir, 'core', 'services', 'theme_service.dart'), themeServiceStub(), dryRun: dryRun, force: force);
     count += _w(p.join(libDir, 'helpers', 'query_helper.dart'), queryHelperStub(), dryRun: dryRun, force: force);
-    count +=
-        _w(p.join(libDir, 'core', 'services', 'search_history_service.dart'), searchHistoryServiceStub(), dryRun: dryRun, force: force);
+    count += _w(p.join(libDir, 'core', 'services', 'search_history_service.dart'), searchHistoryServiceStub(packageName),
+        dryRun: dryRun, force: force);
     count += _w(p.join(libDir, 'resources', 'app_string.dart'), appStringStub(), dryRun: dryRun, force: force);
     count += _w(p.join(libDir, 'widgets', 'common', 'app_error_widget.dart'), appErrorWidgetStub(), dryRun: dryRun, force: force);
     count += _w(p.join(libDir, 'widgets', 'common', 'empty_state_page_new.dart'), emptyStatePageStub(), dryRun: dryRun, force: force);
@@ -234,18 +241,21 @@ class InitCommand extends Command<int> {
         if (mainContent.contains('MaterialApp(') && !mainContent.contains('GetMaterialApp(')) {
           mainContent = '''import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'core/bindings/initial_binding.dart';
 import 'utils/theme/app_theme.dart';
 import 'core/services/theme_service.dart';
+import 'core/services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  Get.put(ThemeService(prefs));
+  
+  // Initialize Core Services
+  final storage = await StorageService().init();
+  Get.put(storage);
+  Get.put(ThemeService());
 
   runApp(const MainApp());
 }

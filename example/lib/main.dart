@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'core/bindings/initial_binding.dart';
 import 'utils/theme/app_theme.dart';
 import 'core/services/theme_service.dart';
+import 'core/services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  Get.put(ThemeService(prefs));
+  
+  // Initialize Core Services
+  final storage = await StorageService().init();
+  Get.put(storage);
+  Get.put(ThemeService());
 
   runApp(const MainApp());
 }

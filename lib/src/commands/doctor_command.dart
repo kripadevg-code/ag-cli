@@ -156,6 +156,7 @@ class DoctorCommand extends Command<int> {
       p.join(libDir, 'core', 'bindings', 'initial_binding.dart'): 'core/bindings/initial_binding.dart',
       p.join(libDir, 'core', 'isolate_handler.dart'): 'core/isolate_handler.dart',
       p.join(libDir, 'core', 'guards', 'auth_guard.dart'): 'core/guards/auth_guard.dart',
+      p.join(libDir, 'core', 'services', 'storage_service.dart'): 'core/services/storage_service.dart',
     };
 
     var initialized = true;

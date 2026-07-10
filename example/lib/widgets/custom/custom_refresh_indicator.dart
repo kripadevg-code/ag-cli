@@ -7,5 +7,8 @@ class CustomRefreshIndicator extends StatelessWidget {
   const CustomRefreshIndicator({super.key, required this.onRefresh, required this.child});
 
   @override
-  Widget build(BuildContext context) => RefreshIndicator(onRefresh: onRefresh, child: child);
+  Widget build(BuildContext context) => RefreshIndicator(
+    onRefresh: onRefresh,
+    child: child,
+  );
 }
