@@ -21,6 +21,11 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: 🎯 Setup Dart (for OIDC authentication)
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
       - name: 📦 Install dependencies
         run: dart pub get
 
