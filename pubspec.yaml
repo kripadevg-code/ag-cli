@@ -1,6 +1,6 @@
 name: ag_cli
 description: Flutter GetX code generator CLI. Scaffolds modules, components, models, repos, controllers, bindings, and pages.
-version: 2.3.1
+version: 2.3.2
 homepage: https://github.com/kripadevg-code/ag-cli
 repository: https://github.com/kripadevg-code/ag-cli
 issue_tracker: https://github.com/kripadevg-code/ag-cli/issues

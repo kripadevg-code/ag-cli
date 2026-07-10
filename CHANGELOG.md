@@ -1,3 +1,7 @@
+## 2.3.2
+
+- **Fix**: Fixed broken image links in `README.md` and restored pub.dev formatting.
+
 ## 2.3.1
 
 - **Docs**: Added a high-quality GIF demo to the `README.md`.
