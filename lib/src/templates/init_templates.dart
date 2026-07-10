@@ -129,7 +129,7 @@ abstract class AppUtility {
 String apiProviderStub() => '''
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/services/storage_service.dart';
 
 /// Custom Exception for standardizing API errors.
 class ApiException implements Exception {
@@ -177,9 +177,9 @@ class ApiProviderImpl implements ApiProvider {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final prefs = await SharedPreferences.getInstance();
-          final token = prefs.getString('access_token');
-          if (token != null) {
+          final storage = StorageService.find;
+          final token = storage.getToken();
+          if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer \$token';
           }
           _logger.d('REQUEST[\${options.method}] => PATH: \${options.path}\\nDATA: \${options.data}');

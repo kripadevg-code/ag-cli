@@ -8,19 +8,4 @@ abstract class RouteManagement {
   // static void goToHomePage() {
   //   Get.toNamed(AppRoutes.home);
   // }
-  static void goToAuthLogin() {
-    Get.toNamed(AppRoutes.authLogin);
-  }
-
-  static void goToProfile() {
-    Get.toNamed(AppRoutes.profile);
-  }
-
-  static void goToSettings() {
-    Get.toNamed(AppRoutes.settings);
-  }
-
-  static void goToProductsDetails() {
-    Get.toNamed(AppRoutes.productsDetails);
-  }
 }
