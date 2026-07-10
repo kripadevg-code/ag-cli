@@ -1,25 +1,17 @@
-# Example
+# example
 
-Since `ag_cli` is a Command Line Interface (CLI) tool, it is not meant to be imported into your Dart code as a library.
+A new Flutter project.
 
-Instead, install it globally via terminal:
+## Getting Started
 
-```bash
-dart pub global activate ag_cli
-```
+This project is a starting point for a Flutter application.
 
-And then run it in any Flutter project:
+A few resources to get you started if this is your first Flutter project:
 
-```bash
-# Initialize a GetX architecture
-ag init
+- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
+- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
 
-# Generate a full module (repo, controller, bindings, pages, components)
-ag g module dashboard --full
-
-# Generate a single component
-ag g component primary_button
-
-# Preview generation without creating files
-ag g module settings --dry-run
-```
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

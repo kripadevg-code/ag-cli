@@ -4,7 +4,7 @@ import 'package:path/path.dart' as p;
 import 'logger.dart';
 
 /// CLI version — single source of truth.
-const String cliVersion = '2.0.0';
+const String cliVersion = '2.1.0';
 
 /// Converts any string to snake_case.
 String toSnake(String input) => input
@@ -14,17 +14,66 @@ String toSnake(String input) => input
     .replaceAll(RegExp(r'^_|_$'), '');
 
 /// Converts any string to PascalCase.
-String toPascal(String input) => input
-    .split(RegExp(r'[_\s\-]+'))
-    .where((s) => s.isNotEmpty)
-    .map((s) => s[0].toUpperCase() + s.substring(1).toLowerCase())
-    .join();
+String toPascal(String input) =>
+    input.split(RegExp(r'[_\s\-]+')).where((s) => s.isNotEmpty).map((s) => s[0].toUpperCase() + s.substring(1).toLowerCase()).join();
 
 /// Converts any string to camelCase.
 String toCamel(String input) {
   final pascal = toPascal(input);
   if (pascal.isEmpty) return pascal;
   return pascal[0].toLowerCase() + pascal.substring(1);
+}
+
+String? resolveGeneratorName(String input) {
+  const aliases = <String, String>{
+    // ─── Module ───────────────────────────────────────────────────────────
+    'module': 'module',
+    'm': 'module',
+    // ─── Component ────────────────────────────────────────────────────────
+    'component': 'component',
+    'c': 'component',
+    // ─── Model ────────────────────────────────────────────────────────────
+    'model': 'model',
+    'mo': 'model',
+    // ─── Repository ───────────────────────────────────────────────────────
+    'repo': 'repo',
+    'r': 'repo',
+    'repository': 'repo',
+    // ─── Service ──────────────────────────────────────────────────────────
+    'service': 'service',
+    'svc': 'service',
+    's': 'service',
+    // ─── Controller ───────────────────────────────────────────────────────
+    'controller': 'controller',
+    'ctrl': 'controller',
+    'co': 'controller',
+    // ─── Binding ──────────────────────────────────────────────────────────
+    'binding': 'binding',
+    'b': 'binding',
+    // ─── Page ─────────────────────────────────────────────────────────────
+    'page': 'page',
+    'p': 'page',
+    'pg': 'page',
+    // ─── Enum (Flutter equivalent of ng g enum) ───────────────────────────
+    'enum': 'enum',
+    'e': 'enum',
+    // ─── Interface / Abstract class ───────────────────────────────────────
+    'interface': 'interface',
+    'i': 'interface',
+    // ─── Guard (route guard) ──────────────────────────────────────────────
+    'guard': 'guard',
+    'gu': 'guard',
+    // ─── Middleware / Interceptor ─────────────────────────────────────────
+    'interceptor': 'interceptor',
+    'in': 'interceptor',
+    // ─── Mixin ────────────────────────────────────────────────────────────
+    'mixin': 'mixin',
+    'mx': 'mixin',
+    // ─── Extension ────────────────────────────────────────────────────────
+    'extension': 'extension',
+    'ex': 'extension',
+  };
+  return aliases[input.toLowerCase()];
 }
 
 /// Creates a file at [filePath] with [content], creating parent dirs as needed.
@@ -90,8 +139,7 @@ String? findLibDir([Directory? startDir]) {
 
     // Standard single-app project
     final singleLib = Directory(p.join(dir.path, 'lib'));
-    if (singleLib.existsSync() &&
-        File(p.join(dir.path, 'pubspec.yaml')).existsSync()) {
+    if (singleLib.existsSync() && File(p.join(dir.path, 'pubspec.yaml')).existsSync()) {
       return singleLib.path;
     }
     dir = dir.parent;

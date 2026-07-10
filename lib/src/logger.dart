@@ -1,49 +1,49 @@
-// ignore_for_file: avoid_print
+import 'package:mason_logger/mason_logger.dart';
 
-/// ANSI color codes for styled terminal output.
+/// Centralized logger instance using mason_logger for premium UI, spinners, and prompts.
 class Log {
   Log._();
 
-  // ─── ANSI codes ────────────────────────────────────────────────────────────
+  static final Logger mason = Logger();
+
+  // ─── ANSI codes (for custom formatting if needed) ───────────────────────
   static const _reset = '\x1B[0m';
   static const _bold = '\x1B[1m';
-  static const _red = '\x1B[31m';
-  static const _green = '\x1B[32m';
-  static const _yellow = '\x1B[33m';
-  static const _cyan = '\x1B[36m';
   static const _gray = '\x1B[90m';
 
   // ─── Public API ────────────────────────────────────────────────────────────
 
-  /// Green ✔ success line.
-  static void success(String msg) => print('  $_green✔$_reset $msg');
-
-  /// Yellow ⚠ warning line.
-  static void warn(String msg) => print('  $_yellow⚠$_reset $msg');
-
-  /// Red ❌ error line.
-  static void error(String msg) => print('$_red❌  $msg$_reset');
-
-  /// Cyan ℹ info line.
-  static void info(String msg) => print('$_cyan$msg$_reset');
-
-  /// Gray dim text.
+  static void success(String msg) => mason.success(msg);
+  static void warn(String msg) => mason.warn(msg);
+  static void error(String msg) => mason.err(msg);
+  static void info(String msg) => mason.info(msg);
   static void dim(String msg) => print('$_gray$msg$_reset');
-
-  /// Bold header text.
   static void header(String msg) => print('$_bold$msg$_reset');
+  static void blank() => print('');
 
   /// Dry-run placeholder (○ instead of ✔).
   static void dryRun(String msg) => print('  $_gray○$_reset $msg');
 
-  /// Print a blank line.
-  static void blank() => print('');
+  /// Start a progress spinner. Call `.complete([msg])` or `.fail([msg])` on it.
+  static Progress progress(String msg) => mason.progress(msg);
 
-  /// Print the CLI banner.
-  static void banner(String version) {
-    print('');
-    print('$_cyan$_bold  ag$_reset $_gray v$version$_reset');
-    print('$_gray  Flutter GetX code generator$_reset');
-    print('');
+  /// Prompt the user with an interactive list of options.
+  static T chooseOne<T>({
+    required String prompt,
+    required List<T> choices,
+    String Function(T)? display,
+    T? defaultValue,
+  }) {
+    return mason.chooseOne<T>(
+      prompt,
+      choices: choices,
+      display: display,
+      defaultValue: defaultValue,
+    );
+  }
+
+  /// Prompt the user for text input.
+  static String prompt(String message, {String? defaultValue}) {
+    return mason.prompt(message, defaultValue: defaultValue);
   }
 }

@@ -1,10 +1,16 @@
-String controllerMinimalTemplate(String mod, String cls, String pkg) => '''
+import '../utils.dart';
+
+String controllerMinimalTemplate(String mod, String fileNamePrefix, String cls, String pkg) {
+  // When cls differs from toPascal(mod), the controller is standalone —
+  // its repo comes from its own module (toSnake(cls)), not mod.
+  final snakeCls = toSnake(cls);
+  return '''
 import 'package:get/get.dart';
 import 'package:$pkg/constants/enums.dart';
-import 'package:$pkg/modules/$mod/repos/${mod}_repo.dart';
+import 'package:$pkg/modules/$mod/repos/${snakeCls}_repo.dart';
 import 'package:$pkg/utils/utility.dart';
 // TODO: import your model
-// import 'package:$pkg/modules/$mod/models/${mod}_model.dart';
+// import 'package:$pkg/modules/$mod/models/${snakeCls}_model.dart';
 
 class ${cls}Controller extends GetxController with ScrollMixin {
   static ${cls}Controller get find => Get.find();
@@ -15,8 +21,8 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   // ─── Variables ──────────────────────────────────────────────────────────
 
   bool _isInitialLoaded = false;
-  LoadingStatus _loadingStatus = .done;
-  LoadingStatus _isMoreLoading = .done;
+  LoadingStatus _loadingStatus = LoadingStatus.done;
+  LoadingStatus _isMoreLoading = LoadingStatus.done;
   // final List<${cls}Model> _items = [];
   RxBool hasNoMoreData = false.obs;
   int page = 1;
@@ -40,9 +46,9 @@ class ${cls}Controller extends GetxController with ScrollMixin {
 
   Future<void> _getItems({bool isLoading = true, bool isMore = false}) async {
     if (hasNoMoreData.value && isMore) return;
-    if (isLoading) loadingStatus = .loading;
+    if (isLoading) loadingStatus = LoadingStatus.loading;
     if (isMore) {
-      isMoreLoading = .loading;
+      isMoreLoading = LoadingStatus.loading;
       await Future.delayed(const Duration(seconds: 1));
     }
     try {
@@ -53,10 +59,10 @@ class ${cls}Controller extends GetxController with ScrollMixin {
       //   _items.addAll(model.results ?? []);
       //   update();
       // }
-      loadingStatus = .done;
-      isMoreLoading = .done;
+      loadingStatus = LoadingStatus.done;
+      isMoreLoading = LoadingStatus.done;
     } catch (e, st) {
-      loadingStatus = .error;
+      loadingStatus = LoadingStatus.error;
       AppUtility.log('_getItems: \$e st=\$st', tag: 'error');
     }
   }
@@ -68,7 +74,7 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   }
 
   Future<void> _initialize() async {
-    loadingStatus = .loading;
+    loadingStatus = LoadingStatus.loading;
     await _getItems(isLoading: false);
     isInitialLoaded = true;
   }
@@ -94,20 +100,24 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   void onRetryTap() => _initialize();
 }
 ''';
+}
 
-String controllerSearchTemplate(String mod, String cls, String pkg) => '''
+String controllerSearchTemplate(String mod, String fileNamePrefix, String cls, String pkg) {
+  final snakeCls = toSnake(cls);
+  return '''
+// ignore_for_file: unused_import
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 import 'package:$pkg/constants/enums.dart';
 import 'package:$pkg/helpers/query_helper.dart';
-import 'package:$pkg/model/tickets/responses/state_model.dart';
-import 'package:$pkg/modules/$mod/repos/${mod}_repo.dart';
+import 'package:$pkg/model/common/state_model.dart';
+import 'package:$pkg/modules/$mod/repos/${snakeCls}_repo.dart';
 import 'package:$pkg/routes/route_management.dart';
-import 'package:$pkg/services/search_history_service.dart';
+import 'package:$pkg/core/services/search_history_service.dart';
 import 'package:$pkg/utils/utility.dart';
 // TODO: import your model
-// import 'package:$pkg/modules/$mod/models/${mod}_model.dart';
+// import 'package:$pkg/modules/$mod/models/${snakeCls}_model.dart';
 
 class ${cls}Controller extends GetxController with ScrollMixin {
   static ${cls}Controller get find => Get.find();
@@ -115,13 +125,14 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   final ${cls}Repo repo;
   ${cls}Controller({required this.repo});
 
-  static const String historyKey = '${mod}_search';
+  static const String historyKey = '${fileNamePrefix}_search';
 
   // ─── Variables ──────────────────────────────────────────────────────────
 
   bool _isInitialLoaded = false;
   bool _isSearchFieldVisible = false;
   bool _isHistoryVisible = false;
+  // ignore: unused_field
   String _lastSearchQuery = '';
   bool _searchFetchedOnce = false;
   String _lastFetchedQuery = '';
@@ -130,10 +141,10 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   final FocusNode searchFocusNode = FocusNode();
   final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 700));
 
-  LoadingStatus _loadingStatus = .done;
-  LoadingStatus _isMoreLoading = .done;
+  LoadingStatus _loadingStatus = LoadingStatus.done;
+  LoadingStatus _isMoreLoading = LoadingStatus.done;
   // final List<${cls}Model> _items = [];
-  var _topFilterModels = <StateModel>[];
+  final List<StateModel> _topFilterModels = [];
   final Rxn<StateModel> _selectedFilter = Rxn(StateModel(id: 0, name: 'All', isSelected: true));
   RxBool hasNoMoreData = false.obs;
   final Rxn<Map<String, dynamic>?> _timeFilter = Rxn(null);
@@ -211,6 +222,7 @@ class ${cls}Controller extends GetxController with ScrollMixin {
 
   // ─── Data ─────────────────────────────────────────────────────────────────
 
+  // ignore: unused_element
   List<Map<String, dynamic>>? _buildFilter() {
     if (_isSearchFieldVisible && searchFieldController.text.trim().isNotEmpty) {
       // TODO: return QueryHelper.get${cls}SearchFilterQuery(searchFieldController.text.trim());
@@ -229,14 +241,14 @@ class ${cls}Controller extends GetxController with ScrollMixin {
 
   Future<void> _getItems({bool isLoading = true, bool isMore = false, bool canReturn = true}) async {
     if (hasNoMoreData.value && canReturn) return;
-    if (isLoading) loadingStatus = .loading;
-    if (isMore) { isMoreLoading = .loading; await Future.delayed(const Duration(seconds: 1)); }
+    if (isLoading) loadingStatus = LoadingStatus.loading;
+    if (isMore) { isMoreLoading = LoadingStatus.loading; await Future.delayed(const Duration(seconds: 1)); }
     try {
       // TODO: call repo with page, itemPerPage, timeFilter, filter: _buildFilter()
-      loadingStatus = .done;
-      isMoreLoading = .done;
+      loadingStatus = LoadingStatus.done;
+      isMoreLoading = LoadingStatus.done;
     } catch (e, st) {
-      loadingStatus = .error;
+      loadingStatus = LoadingStatus.error;
       AppUtility.log('_getItems: \$e st=\$st', tag: 'error');
     }
   }
@@ -250,11 +262,10 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   void _onClearTimeFilterTap() { appBarText = null; _timeFilter.value = null; _onRefresh(); }
 
   Future<void> _goToCustomTimeFilterPage() async {
-    final result = await RouteManagement.goToCustomFilterChannelChatPage();
-    if (result.item1 == null) return;
-    // TODO: handle time filter (see tasks_controller.dart for reference)
-    appBarText = result.item2;
-    _getItems();
+    // TODO: final result = await RouteManagement.goToCustomFilterChannelChatPage();
+    // if (result.item1 == null) return;
+    // appBarText = result.item2;
+    // _getItems();
   }
 
   Future<void> _onRefresh() async { page = 1; hasNoMoreData.value = false; await _getItems(); }
@@ -269,7 +280,7 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   }
 
   Future<void> _initialize() async {
-    loadingStatus = .loading;
+    loadingStatus = LoadingStatus.loading;
     await Future.wait([_getOptions(), _getItems(isLoading: false)]);
     isInitialLoaded = true;
   }
@@ -314,3 +325,4 @@ class ${cls}Controller extends GetxController with ScrollMixin {
   }
 }
 ''';
+}

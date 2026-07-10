@@ -3,15 +3,15 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-104.0.0",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-93.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.9"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/analyzer-14.0.0",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/analyzer-10.0.1",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.9"
     },
     {
       "name": "args",
@@ -62,6 +62,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "ffi",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/ffi-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
       "name": "file",
       "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/file-7.0.1",
       "packageUri": "lib/",
@@ -110,6 +116,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "mason_logger",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/mason_logger-0.3.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/matcher-0.12.20",
       "packageUri": "lib/",
@@ -117,7 +129,7 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/meta-1.19.0",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/meta-1.17.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -135,9 +147,9 @@
     },
     {
       "name": "package_config",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/package_config-3.0.0",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/package_config-2.2.0",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.4"
     },
     {
       "name": "path",
@@ -225,21 +237,21 @@
     },
     {
       "name": "test",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test-1.31.2",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test-1.31.1",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.10"
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test_api-0.7.13",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test_api-0.7.12",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.10"
     },
     {
       "name": "test_core",
-      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test_core-0.6.19",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/test_core-0.6.18",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.10"
     },
     {
       "name": "typed_data",
@@ -282,6 +294,12 @@
       "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/webkit_inspection_protocol-1.2.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "win32",
+      "rootUri": "file:///Users/infraon/.pub-cache/hosted/pub.dev/win32-5.15.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
     },
     {
       "name": "yaml",

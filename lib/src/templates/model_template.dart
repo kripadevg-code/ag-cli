@@ -1,4 +1,4 @@
-String modelTemplate(String mod, String cls, String pkg) => '''
+String modelTemplate(String mod, String fileNamePrefix, String cls, String pkg) => '''
 /// Data model for $cls.
 ///
 /// TODO: Add your fields, then update fromJson / toJson.
@@ -26,8 +26,12 @@ class ${cls}Model {
 }
 ''';
 
-String responseModelTemplate(String mod, String cls, String pkg) => '''
-import 'package:$pkg/modules/$mod/models/${mod}_model.dart';
+/// [parentMod] — the folder the response model lives in (e.g. 'orders')
+/// [name]      — snake_case name of the model file (e.g. 'invoice')
+/// [cls]       — PascalCase class name (e.g. 'Invoice')
+/// [pkg]       — Flutter package name
+String responseModelTemplate(String parentMod, String name, String cls, String pkg) => '''
+import 'package:$pkg/modules/$parentMod/models/${name}_model.dart';
 
 /// Response wrapper for $cls API.
 class ${cls}ResponseModel {

@@ -1,0 +1,47 @@
+name: CI / Pub Score Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: 📦 Install dependencies
+        run: dart pub get
+
+      - name: 🔎 Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: 🚨 Analyze project
+        run: dart analyze --fatal-infos
+
+      - name: 🧪 Run tests
+        run: dart test
+
+      - name: 💯 Check pub.dev score (160/160)
+        run: |
+          dart pub global activate pana
+          PANA_OUTPUT=$(dart pub global run pana --no-warning .)
+          
+          echo "$PANA_OUTPUT"
+          
+          if echo "$PANA_OUTPUT" | grep -q "Points: 160/160."; then
+            echo "✅ Perfect 160/160 score maintained!"
+            exit 0
+          else
+            echo "❌ ERROR: Pub points dropped below 160!"
+            exit 1
+          fi

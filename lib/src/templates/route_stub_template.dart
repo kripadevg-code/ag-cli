@@ -1,38 +1,20 @@
-String routeStubTemplate(String mod, String cls) => '''
-# Route Registration — TODO
+String routeStubTemplate(String moduleDir, String fileNamePrefix, String cls) => '''
+<!-- ROUTE_TODO.md -->
+# 🚀 Final Step: Register the Route for $cls
 
-## 1. app_routes.dart
+Since the `app_pages.dart` or `app_routes.dart` files couldn't be automatically updated (they might be missing or heavily customized), you need to manually register the route for this module.
 
-```dart
-// In AppRoutes:
-static const ${mod}Page = _Routes.${mod}Page;
-// In _Routes:
-static const ${mod}Page = '/${mod}_page';
-```
+1. **Add Route Constant** in `lib/routes/app_routes.dart`:
+   ```dart
+   static const ${fileNamePrefix.toUpperCase()} = '/$fileNamePrefix';
+   ```
 
-## 2. app_pages.dart
-
-```dart
-import 'package:infinity/modules/$mod/bindings/${mod}_binding.dart';
-import 'package:infinity/modules/$mod/pages/${mod}_page.dart';
-
-// In pages list:
-GetPage(
-  name: AppRoutes.${mod}Page,
-  page: ${cls}Page.new,
-  binding: ${cls}Binding(),
-  transition: defaultTransition,
-),
-```
-
-## 3. route_management.dart
-
-```dart
-import 'package:infinity/modules/$mod/controllers/${mod}_controller.dart';
-
-static void goTo${cls}Page() {
-  Get.delete<${cls}Controller>();
-  Get.toNamed(AppRoutes.${mod}Page);
-}
-```
+2. **Add GetPage** in `lib/routes/app_pages.dart`:
+   ```dart
+   GetPage(
+     name: AppRoutes.${fileNamePrefix.toUpperCase()},
+     page: () => const ${cls}Page(),
+     binding: ${cls}Binding(),
+   ),
+   ```
 ''';

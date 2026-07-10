@@ -3,30 +3,48 @@ import 'package:test/test.dart';
 
 void main() {
   group('toSnake', () {
-    test('converts PascalCase',
-        () => expect(toSnake('ProblemModule'), 'problem_module'));
     test(
-        'converts camelCase', () => expect(toSnake('myFeature'), 'my_feature'));
-    test('lowercases plain word',
-        () => expect(toSnake('incidents'), 'incidents'));
-    test('handles dashes and spaces',
-        () => expect(toSnake('my-feature name'), 'my_feature_name'));
+      'converts PascalCase',
+      () => expect(toSnake('ProblemModule'), 'problem_module'),
+    );
+    test(
+      'converts camelCase',
+      () => expect(toSnake('myFeature'), 'my_feature'),
+    );
+    test(
+      'lowercases plain word',
+      () => expect(toSnake('incidents'), 'incidents'),
+    );
+    test(
+      'handles dashes and spaces',
+      () => expect(toSnake('my-feature name'), 'my_feature_name'),
+    );
   });
 
   group('toPascal', () {
-    test('converts snake_case',
-        () => expect(toPascal('problem_module'), 'ProblemModule'));
-    test('converts single word',
-        () => expect(toPascal('incidents'), 'Incidents'));
-    test('converts space-separated',
-        () => expect(toPascal('my feature'), 'MyFeature'));
+    test(
+      'converts snake_case',
+      () => expect(toPascal('problem_module'), 'ProblemModule'),
+    );
+    test(
+      'converts single word',
+      () => expect(toPascal('incidents'), 'Incidents'),
+    );
+    test(
+      'converts space-separated',
+      () => expect(toPascal('my feature'), 'MyFeature'),
+    );
   });
 
   group('toCamel', () {
-    test('converts snake_case',
-        () => expect(toCamel('problem_module'), 'problemModule'));
     test(
-        'converts PascalCase', () => expect(toCamel('Incidents'), 'incidents'));
+      'converts snake_case',
+      () => expect(toCamel('problem_module'), 'problemModule'),
+    );
+    test(
+      'converts PascalCase',
+      () => expect(toCamel('Incidents'), 'incidents'),
+    );
     test('converts single word', () => expect(toCamel('test'), 'test'));
   });
 
@@ -36,18 +54,36 @@ void main() {
       expect(resolveGeneratorName('component'), 'component');
       expect(resolveGeneratorName('model'), 'model');
       expect(resolveGeneratorName('repo'), 'repo');
+      expect(resolveGeneratorName('service'), 'service');
       expect(resolveGeneratorName('controller'), 'controller');
       expect(resolveGeneratorName('binding'), 'binding');
       expect(resolveGeneratorName('page'), 'page');
+      expect(resolveGeneratorName('enum'), 'enum');
+      expect(resolveGeneratorName('interface'), 'interface');
+      expect(resolveGeneratorName('guard'), 'guard');
+      expect(resolveGeneratorName('interceptor'), 'interceptor');
+      expect(resolveGeneratorName('mixin'), 'mixin');
+      expect(resolveGeneratorName('extension'), 'extension');
     });
 
     test('resolves shortcuts', () {
       expect(resolveGeneratorName('m'), 'module');
       expect(resolveGeneratorName('c'), 'component');
+      expect(resolveGeneratorName('mo'), 'model');
       expect(resolveGeneratorName('r'), 'repo');
+      expect(resolveGeneratorName('s'), 'service');
+      expect(resolveGeneratorName('svc'), 'service');
       expect(resolveGeneratorName('ctrl'), 'controller');
+      expect(resolveGeneratorName('co'), 'controller');
       expect(resolveGeneratorName('b'), 'binding');
       expect(resolveGeneratorName('p'), 'page');
+      expect(resolveGeneratorName('pg'), 'page');
+      expect(resolveGeneratorName('e'), 'enum');
+      expect(resolveGeneratorName('i'), 'interface');
+      expect(resolveGeneratorName('gu'), 'guard');
+      expect(resolveGeneratorName('in'), 'interceptor');
+      expect(resolveGeneratorName('mx'), 'mixin');
+      expect(resolveGeneratorName('ex'), 'extension');
     });
 
     test('resolves aliases', () {
@@ -62,6 +98,8 @@ void main() {
     test('is case-insensitive', () {
       expect(resolveGeneratorName('Module'), 'module');
       expect(resolveGeneratorName('COMPONENT'), 'component');
+      expect(resolveGeneratorName('S'), 'service');
+      expect(resolveGeneratorName('GUARD'), 'guard');
     });
   });
 

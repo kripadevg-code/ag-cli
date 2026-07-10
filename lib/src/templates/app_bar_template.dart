@@ -1,13 +1,8 @@
-String appBarTemplate(String mod, String cls, String pkg) => '''
+String appBarTemplate(String mod, String fileNamePrefix, String cls, String pkg) => '''
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:$pkg/extensions/text_theme_extension.dart';
-import 'package:$pkg/modules/$mod/controllers/${mod}_controller.dart';
-import 'package:$pkg/resources/app_string.dart';
-import 'package:$pkg/resources/assets_manager.dart';
+import 'package:$pkg/modules/$mod/controllers/${fileNamePrefix}_controller.dart';
 import 'package:$pkg/utils/dimens.dart';
-import 'package:$pkg/widgets/custom/custom_app_bar.dart';
-import 'package:$pkg/widgets/custom/primary_icon_btn.dart';
 
 class ${cls}AppBar extends StatelessWidget implements PreferredSizeWidget {
   const ${cls}AppBar({super.key, required this.controller});
@@ -67,21 +62,17 @@ class _NormalBar extends StatelessWidget {
   final VoidCallback? onSearchTap, onCalendarTap;
 
   @override
-  Widget build(BuildContext context) => InfraonAppBar(
-    title: title ?? AppString.$mod.tr,
-    fontSize: Dimens.twenty,
+  Widget build(BuildContext context) => AppBar(
+    title: Text(title ?? '$cls'),
     actions: [
-      InfraonAppIconButton(
-        isVisible: !hasFilter,
-        onTap: onSearchTap,
-        svgIcon: ImageAssets.searchIcon,
-        scale: 1.1,
-      ),
-      InfraonAppIconButton(
-        icon: hasFilter ? Icons.clear_rounded : Icons.calendar_today_rounded,
-        iconSize: hasFilter ? Dimens.twenty : Dimens.sixTeen,
-        scale: 1.2,
-        onTap: onCalendarTap,
+      if (!hasFilter)
+        IconButton(
+          onPressed: onSearchTap,
+          icon: const Icon(Icons.search),
+        ),
+      IconButton(
+        icon: Icon(hasFilter ? Icons.clear_rounded : Icons.calendar_today_rounded),
+        onPressed: onCalendarTap,
       ),
     ],
   );
@@ -109,11 +100,11 @@ class _SearchBar extends StatelessWidget {
     automaticallyImplyLeading: false,
     title: Row(
       children: [
-        InfraonAppIconButton(
-          onTap: onBackTap,
-          icon: GetPlatform.isAndroid
+        IconButton(
+          onPressed: onBackTap,
+          icon: Icon(GetPlatform.isAndroid
               ? Icons.arrow_back_rounded
-              : Icons.arrow_back_ios_new_rounded,
+              : Icons.arrow_back_ios_new_rounded),
         ),
         Expanded(
           child: TextField(
@@ -124,7 +115,7 @@ class _SearchBar extends StatelessWidget {
             onChanged: onChanged,
             textInputAction: TextInputAction.search,
             decoration: InputDecoration(
-              hintText: AppString.searchByIDorRequester.tr,
+              hintText: 'Search...',
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -133,13 +124,12 @@ class _SearchBar extends StatelessWidget {
               hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
               suffixIcon: ValueListenableBuilder<TextEditingValue>(
                 valueListenable: controller,
-                builder: (_, v, _) => InfraonAppIconButton(
-                  isVisible: v.text.isNotEmpty,
-                  icon: Icons.close,
-                  scale: 0.9,
-                  iconColor: Theme.of(context).labelSmallColor,
-                  onTap: onClearTap,
-                ),
+                builder: (_, v, _) => v.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: onClearTap,
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
           ),
@@ -150,10 +140,9 @@ class _SearchBar extends StatelessWidget {
 }
 ''';
 
-String appBarFilterTemplate(String mod, String cls, String pkg) => '''
+String appBarFilterTemplate(String mod, String fileNamePrefix, String cls, String pkg) => '''
 import 'package:flutter/material.dart';
-import 'package:$pkg/modules/$mod/controllers/${mod}_controller.dart';
-import 'package:$pkg/modules/tickets/components/filter_tag.dart';
+import 'package:$pkg/modules/$mod/controllers/${fileNamePrefix}_controller.dart';
 import 'package:$pkg/utils/dimens.dart';
 
 class ${cls}AppbarFilter extends StatelessWidget {
@@ -170,12 +159,23 @@ class ${cls}AppbarFilter extends StatelessWidget {
       itemCount: controller.topFilterModels.length,
       itemBuilder: (_, i) {
         final model = controller.topFilterModels[i];
-        return FilterTag(
-          alignment: Alignment.center,
-          title: model.name,
-          isSelected: model.isSelected,
-          onFilterTap: () => controller.onTopFilterTap(i),
-          isLeftMargin: i == 0,
+        return GestureDetector(
+          onTap: () => controller.onTopFilterTap(i),
+          child: Container(
+            margin: EdgeInsets.only(left: i == 0 ? Dimens.sixTeen : 0, right: Dimens.eight),
+            padding: EdgeInsets.symmetric(horizontal: Dimens.sixTeen),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: model.isSelected ? Theme.of(context).primaryColor : Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(Dimens.twenty),
+            ),
+            child: Text(
+              model.name,
+              style: TextStyle(
+                color: model.isSelected ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
         );
       },
     ),
